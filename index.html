@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="全链服务 - 暗网级Web3解决方案，提供一站式区块链服务">
+  <meta name="theme-color" content="#000000">
+  <title>全链服务 | 暗网级Web3解决方案</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono:wght@400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== CSS 变量定义 ===== */
+    :root {
+      --neon: #00f0ff;
+      --neon-dark: #00d4e8;
+      --neon-light: #33ffff;
+      --bg: #000000;
+      --bg-secondary: #0a0e27;
+      --card: #020617;
+      --card-hover: #0f1629;
+      --text: #d9faff;
+      --text-secondary: #a0d8ff;
+      --muted: #5c6f8f;
+      --accent: #ff00ff;
+      --accent-light: #ff33ff;
+      --success: #00ff9f;
+      --danger: #ff0055;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ===== 全局重置 ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== 扫描线效果 ===== */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 240, 255, 0.03),
+        rgba(0, 240, 255, 0.03) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ===== 容器 ===== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 16px;
+      }
+    }
+
+    /* ===== 导航栏 ===== */
+    .nav {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 100%);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      box-shadow: 0 8px 32px rgba(0, 240, 255, 0.1);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--neon);
+      text-shadow: 0 0 10px var(--neon), 0 0 20px rgba(0, 240, 255, 0.5);
+      letter-spacing: 2px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .logo:hover {
+      text-shadow: 0 0 15px var(--neon), 0 0 30px rgba(0, 240, 255, 0.7);
+      transform: scale(1.05);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 1px;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon), transparent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--neon);
+      text-shadow: 0 0 10px var(--neon);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        gap: 15px;
+      }
+
+      .nav-links a {
+        font-size: 12px;
+      }
+    }
+
+    /* ===== Hero 部分 ===== */
+    .hero {
+      padding: 150px 0 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.1) 0%, transparent 70%);
+      filter: blur(40px);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(36px, 8vw, 72px);
+      font-weight: 900;
+      color: var(--neon);
+      text-shadow: 0 0 20px var(--neon), 0 0 40px rgba(0, 240, 255, 0.5);
+      margin-bottom: 15px;
+      letter-spacing: 3px;
+      animation: heroGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes heroGlow {
+      0%, 100% {
+        text-shadow: 0 0 20px var(--neon), 0 0 40px rgba(0, 240, 255, 0.5);
+      }
+      50% {
+        text-shadow: 0 0 30px var(--neon), 0 0 60px rgba(0, 240, 255, 0.8);
+      }
+    }
+
+    .hero p {
+      color: var(--text-secondary);
+      margin: 20px 0;
+      font-size: clamp(14px, 2vw, 18px);
+      letter-spacing: 1px;
+    }
+
+    .typing {
+      color: var(--neon-light);
+      border-right: 3px solid var(--neon);
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+      animation: typing 4s steps(40, end), blink 0.7s infinite;
+      font-weight: 700;
+    }
+
+    @keyframes typing {
+      from {
+        width: 0;
+      }
+      to {
+        width: 100%;
+      }
+    }
+
+    @keyframes blink {
+      0%, 49% {
+        border-right-color: var(--neon);
+      }
+      50%, 100% {
+        border-right-color: transparent;
+      }
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 14px 40px;
+      border: 2px solid var(--neon);
+      color: var(--neon);
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      letter-spacing: 2px;
+      font-size: 14px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn:hover {
+      background: rgba(0, 240, 255, 0.1);
+      color: #000;
+      box-shadow: 0 0 20px var(--neon), inset 0 0 20px rgba(0, 240, 255, 0.2);
+      text-shadow: 0 0 10px var(--neon);
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        padding: 120px 0 80px;
+      }
+
+      .hero h1 {
+        letter-spacing: 2px;
+      }
+    }
+
+    /* ===== 部分标题 ===== */
+    .section {
+      padding: 80px 0;
+      position: relative;
+    }
+
+    .section h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(24px, 5vw, 40px);
+      color: var(--neon);
+      margin-bottom: 50px;
+      text-align: center;
+      letter-spacing: 2px;
+      text-shadow: 0 0 15px var(--neon);
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .section h2::after {
+      content: "";
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon), transparent);
+    }
+
+    /* ===== 网格布局 ===== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    /* ===== 卡片 ===== */
+    .card {
+      background: linear-gradient(135deg, var(--card) 0%, var(--card-hover) 100%);
+      padding: 30px;
+      border: 1px solid rgba(0, 240, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: -100%;
+      background: linear-gradient(120deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.25), inset 0 0 20px rgba(0, 240, 255, 0.05);
+      transform: translateY(-5px);
+    }
+
+    .card:hover::before {
+      left: 100%;
+    }
+
+    .card:hover::after {
+      opacity: 1;
+    }
+
+    .card h3 {
+      margin: 0 0 15px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      color: var(--neon-light);
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ===== 报价部分 ===== */
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 50px;
+    }
+
+    .price-box {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, rgba(255, 0, 255, 0.05) 100%);
+      padding: 35px;
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+    }
+
+    .price-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon), var(--accent), var(--neon));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .price-box::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: var(--neon);
+      box-shadow: 0 0 10px var(--neon);
+      transition: width 0.3s ease;
+    }
+
+    .price-box:hover {
+      border-color: rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+      transform: translateY(-8px);
+    }
+
+    .price-box:hover::before {
+      opacity: 1;
+    }
+
+    .price-box:hover::after {
+      width: 100%;
+    }
+
+    .price-box h3 {
+      font-family: 'Orbitron', sans-serif;
+      margin: 0 0 15px;
+      font-size: 16px;
+      color: var(--text);
+      letter-spacing: 1px;
+    }
+
+    .price-big {
+      font-size: 32px;
+      color: var(--neon);
+      text-shadow: 0 0 15px var(--neon);
+      margin: 15px 0;
+      font-weight: 700;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .price-box p {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 10px 0 0;
+    }
+
+    @media (max-width: 768px) {
+      .pricing {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===== 日志部分 ===== */
+    .log {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(10, 14, 39, 0.5) 100%);
+      border: 1px solid rgba(0, 255, 159, 0.2);
+      padding: 25px;
+      height: auto;
+      min-height: 200px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-size: 13px;
+      color: var(--success);
+      font-family: 'Courier Prime', monospace;
+      line-height: 1.8;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(10px);
+      box-shadow: inset 0 0 20px rgba(0, 255, 159, 0.05);
+    }
+
+    .log::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .log::-webkit-scrollbar-track {
+      background: rgba(0, 240, 255, 0.05);
+    }
+
+    .log::-webkit-scrollbar-thumb {
+      background: rgba(0, 240, 255, 0.3);
+      border-radius: 4px;
+    }
+
+    .log::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 240, 255, 0.5);
+    }
+
+    .log-line {
+      animation: logAppear 0.3s ease-out;
+    }
+
+    @keyframes logAppear {
+      from {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* ===== 页脚 ===== */
+    .footer {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--muted);
+      border-top: 1px solid rgba(0, 240, 255, 0.1);
+      font-size: 13px;
+      letter-spacing: 1px;
+      background: linear-gradient(180deg, transparent 0%, rgba(0, 240, 255, 0.05) 100%);
+    }
+
+    /* ===== 浮动按钮 ===== */
+    .tg-float {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      border: 2px solid var(--neon);
+      padding: 12px 18px;
+      color: var(--neon);
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      letter-spacing: 1px;
+      font-size: 12px;
+      transition: var(--transition);
+      cursor: pointer;
+      background: transparent;
+      z-index: 99;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    }
+
+    .tg-float:hover {
+      background: rgba(0, 240, 255, 0.15);
+      box-shadow: 0 0 25px var(--neon);
+      transform: scale(1.1);
+    }
+
+    .tg-float:active {
+      transform: scale(0.95);
+    }
+
+    @media (max-width: 768px) {
+      .tg-float {
+        right: 15px;
+        bottom: 15px;
+        padding: 10px 14px;
+        font-size: 11px;
+      }
+    }
+
+    /* ===== 联系部分 ===== */
+    .contact-card {
+      text-align: center;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.08) 0%, rgba(255, 0, 255, 0.08) 100%);
+      padding: 50px 30px;
+      border: 2px solid rgba(0, 240, 255, 0.2);
+      border-radius: 2px;
+      backdrop-filter: blur(10px);
+    }
+
+    .contact-card p {
+      color: var(--text-secondary);
+      font-size: 16px;
+      margin: 20px 0;
+      letter-spacing: 1px;
+    }
+
+    /* ===== 响应式设计 ===== */
+    @media (max-width: 768px) {
+      .section {
+        padding: 60px 0;
+      }
+
+      .nav-inner {
+        height: 60px;
+      }
+
+      .logo {
+        font-size: 16px;
+      }
+    }
+
+    /* ===== 打印样式 ===== */
+    @media print {
+      body::before {
+        display: none;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .tg-float {
+        display: none;
+      }
+    }
+
+    /* ===== 无障碍访问 ===== */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ===== 深色模式支持 ===== */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000000;
+        --text: #d9faff;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 导航栏 -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="logo">全链服务 / ROOT ACCESS</div>
+      <div class="nav-links">
+        <a href="#services">服务</a>
+        <a href="#price">报价</a>
+        <a href="#contact">联系</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero 部分 -->
+  <section class="hero container">
+    <div class="hero-content">
+      <h1>ROOT LEVEL WEB3</h1>
+      <p class="typing">接入链上资源 · 控制数据入口 · 快速上架执行</p>
+      <a class="btn" href="#contact">进入通道</a>
+    </div>
+  </section>
+
+  <!-- 服务部分 -->
+  <section class="section container" id="services">
+    <h2>[ 服务模块 ]</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>AVE / TP 上架</h3>
+        <p>风险压低 / 秒上资料 / 热搜横幅</p>
+      </div>
+      <div class="card">
+        <h3>DEX工具</h3>
+        <p>Dextools / Dexscreener / 数据优化</p>
+      </div>
+      <div class="card">
+        <h3>钱包入口</h3>
+        <p>Trust / MetaMask / TP / BK</p>
+      </div>
+      <div class="card">
+        <h3>媒体矩阵</h3>
+        <p>快讯 / 新闻 / KOL推特矩阵</p>
+      </div>
+      <div class="card">
+        <h3>开发定制</h3>
+        <p>发币 / 合约 / DApp / 官网</p>
+      </div>
+      <div class="card">
+        <h3>安全服务</h3>
+        <p>审计 / 风控 / 资产追回</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 报价部分 -->
+  <section class="section container" id="price">
+    <h2>[ 官方报价 ]</h2>
+    <div class="pricing">
+      <div class="price-box">
+        <h3>官网开发</h3>
+        <div class="price-big">100U - 500U</div>
+        <p>极客UI / 暗黑风</p>
+      </div>
+      <div class="price-box">
+        <h3>媒体曝光</h3>
+        <div class="price-big">10U+</div>
+        <p>新闻 / 快讯</p>
+      </div>
+      <div class="price-box">
+        <h3>TP头像</h3>
+        <div class="price-big">1000U</div>
+        <p>TokenPocket 集成</p>
+      </div>
+      <div class="price-box">
+        <h3>DEXTOOLS</h3>
+        <div class="price-big">330U</div>
+        <p>数据优化</p>
+      </div>
+      <div class="price-box">
+        <h3>DEXSCREENER</h3>
+        <div class="price-big">300U</div>
+        <p>行情展示</p>
+      </div>
+      <div class="price-box">
+        <h3>Trust钱包</h3>
+        <div class="price-big">2500U</div>
+        <p>钱包集成</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 日志部分 -->
+  <section class="section container">
+    <h2>[ 实时链上日志 ]</h2>
+    <div class="log">
+      <div class="log-line">[ OK ] dextools logo submitted...</div>
+      <div class="log-line">[ OK ] TP wallet verified...</div>
+      <div class="log-line">[ OK ] ave trend boosted...</div>
+      <div class="log-line">[ OK ] media pushed...</div>
+      <div class="log-line">[ OK ] contract deployed...</div>
+      <div class="log-line">[ OK ] security audit passed...</div>
+      <div class="log-line">[ OK ] liquidity pool initialized...</div>
+    </div>
+  </section>
+
+  <!-- 联系部分 -->
+  <section class="section container" id="contact">
+    <h2>[ 接入通道 ]</h2>
+    <div class="contact-card">
+      <p style="font-size: 18px; font-weight: 700; letter-spacing: 2px;">Telegram</p>
+      <p>@avetplogo</p>
+      <a class="btn" href="https://t.me/avetplogo" target="_blank" rel="noopener noreferrer">立即连接</a>
+    </div>
+  </section>
+
+  <!-- 浮动按钮 -->
+  <a class="tg-float" href="https://t.me/avetplogo" target="_blank" rel="noopener noreferrer">TG</a>
+
+  <!-- 页脚 -->
+  <footer class="footer">© 2018-2026 FULLCHAIN SYSTEM | 全链服务</footer>
+
+</body>
+</html>
